@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luiz Grochevski — Backend Developer / AppSec</title>
+<meta name="description" content="Luiz Felipe Grochevski — Java Backend Developer com foco em AppSec e Security Engineering.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0B1220;
+    --bg-surface: #121B2E;
+    --bg-surface-2: #182642;
+    --border: #263450;
+    --text: #E7ECF6;
+    --text-muted: #8FA0C2;
+    --text-faint: #5B6B8C;
+    --accent: #4FD1B8;
+    --accent-dim: #2E7A6C;
+    --high: #EF6461;
+    --medium: #F2A65A;
+    --low: #7CA982;
+    --mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+    --sans: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+    --maxw: 860px;
+  }
+
+  *{ box-sizing: border-box; margin:0; padding:0; }
+
+  html{ scroll-behavior: smooth; }
+
+  body{
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    background-image:
+      linear-gradient(180deg, rgba(79,209,184,0.04), transparent 400px),
+      repeating-linear-gradient(180deg, rgba(255,255,255,0.012) 0px, rgba(255,255,255,0.012) 1px, transparent 1px, transparent 3px);
+  }
+
+  a{ color: var(--accent); text-decoration: none; }
+  a:hover{ text-decoration: underline; }
+  a:focus-visible, button:focus-visible{
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  .wrap{ max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+  /* ---------- Terminal chrome shared by sections ---------- */
+  .panel{
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .panel-head{
+    display:flex; align-items:center; gap:8px;
+    padding: 10px 16px;
+    background: var(--bg-surface-2);
+    border-bottom: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--text-faint);
+    letter-spacing: 0.02em;
+  }
+  .dot{ width:9px; height:9px; border-radius:50%; background: var(--border); }
+  .panel-head .path{ margin-left: 4px; }
+  .panel-body{ padding: 22px 24px; }
+
+  .eyebrow{
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .eyebrow::before{ content: "// "; color: var(--text-faint); }
+
+  /* ---------- Header / nav ---------- */
+  header{
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(11,18,32,0.85);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+  }
+  header .wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 14px 24px;
+  }
+  .logo{
+    font-family: var(--mono); font-weight: 600; font-size: 14px;
+    color: var(--text);
+  }
+  .logo span{ color: var(--accent); }
+  nav ul{ list-style:none; display:flex; gap: 24px; }
+  nav a{
+    font-family: var(--mono); font-size: 13px; color: var(--text-muted);
+  }
+  nav a:hover{ color: var(--accent); text-decoration:none; }
+  @media (max-width: 620px){ nav ul{ gap: 14px; } nav a{ font-size: 12px; } }
+
+  /* ---------- Hero ---------- */
+  .hero{ padding: 64px 0 40px; }
+  .term{
+    font-family: var(--mono);
+    font-size: 14.5px;
+    line-height: 1.9;
+  }
+  .term .prompt{ color: var(--accent); }
+  .term .path-seg{ color: var(--text-muted); }
+  .term .cmd{ color: var(--text); }
+  .cursor{
+    display:inline-block; width: 8px; height: 16px;
+    background: var(--accent);
+    margin-left: 2px;
+    vertical-align: -2px;
+    animation: blink 1s steps(1) infinite;
+  }
+  @media (prefers-reduced-motion: reduce){ .cursor{ animation: none; opacity: 1; } }
+  @keyframes blink{ 50%{ opacity: 0; } }
+
+  h1{
+    font-family: var(--mono);
+    font-size: clamp(28px, 5vw, 42px);
+    font-weight: 600;
+    margin: 22px 0 6px;
+    letter-spacing: -0.01em;
+  }
+  .role{
+    font-size: 17px;
+    color: var(--text-muted);
+    margin-bottom: 22px;
+  }
+  .role strong{ color: var(--text); font-weight: 600; }
+
+  .scan-summary{ margin-top: 28px; }
+  .kv-grid{
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 8px 16px;
+    font-family: var(--mono);
+    font-size: 13.5px;
+  }
+  .kv-grid dt{ color: var(--text-faint); }
+  .kv-grid dd{ color: var(--text); }
+  .status-ok{ color: var(--low); }
+  .status-ok::before{ content: "● "; }
+
+  .hero-links{ display:flex; gap: 14px; margin-top: 26px; flex-wrap: wrap; }
+  .btn{
+    font-family: var(--mono); font-size: 13px;
+    padding: 9px 16px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    transition: border-color .15s ease, color .15s ease;
+  }
+  .btn:hover{ border-color: var(--accent); color: var(--accent); text-decoration:none; }
+  .btn.primary{ background: var(--accent-dim); border-color: var(--accent-dim); color: #EAFFFB; }
+  .btn.primary:hover{ border-color: var(--accent); color: #fff; }
+
+  /* ---------- Section shell ---------- */
+  section{ padding: 52px 0; }
+  section h2{
+    font-family: var(--mono);
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 22px;
+    display:flex; align-items:baseline; gap: 10px;
+  }
+  section h2 .count{
+    font-size: 13px; color: var(--text-faint); font-weight: 400;
+  }
+
+  /* ---------- Stack (open ports table) ---------- */
+  .port-table{ width:100%; border-collapse: collapse; font-family: var(--mono); font-size: 13.5px; }
+  .port-table th{
+    text-align:left; color: var(--text-faint); font-weight: 500;
+    padding: 8px 10px; border-bottom: 1px solid var(--border);
+    text-transform: uppercase; font-size: 11px; letter-spacing: 0.06em;
+  }
+  .port-table td{ padding: 10px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .port-table tr:last-child td{ border-bottom: none; }
+  .port-table td.port{ color: var(--accent); }
+  .state-open{ color: var(--low); }
+  .port-table .svc-desc{ font-family: var(--sans); color: var(--text-muted); font-size: 13px; }
+
+  /* ---------- Findings (projects) ---------- */
+  .findings{ display:flex; flex-direction:column; gap: 16px; }
+  .finding{
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--sev-color, var(--accent));
+    border-radius: 6px;
+    padding: 18px 20px;
+    transition: border-color .15s ease, transform .15s ease;
+  }
+  .finding:hover{ border-color: var(--sev-color, var(--accent)); transform: translateX(2px); }
+  .finding-head{
+    display:flex; align-items:center; justify-content:space-between; gap: 12px; flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+  .finding-title{
+    font-family: var(--mono); font-weight: 600; font-size: 15.5px; color: var(--text);
+  }
+  .sev{
+    font-family: var(--mono); font-size: 11px; font-weight: 600;
+    padding: 3px 9px; border-radius: 4px; letter-spacing: 0.04em;
+    color: var(--bg); background: var(--sev-color);
+    white-space: nowrap;
+  }
+  .finding-desc{ color: var(--text-muted); font-size: 14.5px; margin-bottom: 10px; }
+  .finding-meta{
+    display:flex; gap: 16px; flex-wrap: wrap;
+    font-family: var(--mono); font-size: 12px; color: var(--text-faint);
+  }
+  .finding-meta a{ color: var(--text-muted); }
+  .finding-meta a:hover{ color: var(--accent); }
+  .finding-evidence{
+    margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border);
+    font-family: var(--mono); font-size: 12.5px; color: var(--text-faint);
+  }
+  .finding-evidence strong{ color: var(--text-muted); font-weight: 500; }
+
+  /* ---------- Log (experience) ---------- */
+  .log{ font-family: var(--mono); font-size: 13.5px; }
+  .log-entry{ display:flex; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+  .log-entry:last-child{ border-bottom: none; }
+  .log-ts{ color: var(--text-faint); white-space: nowrap; padding-top: 1px; }
+  .log-body strong{ color: var(--text); font-family: var(--sans); font-size: 15px; display:block; margin-bottom: 3px; }
+  .log-body span.role{ display:block; color: var(--text-muted); font-family: var(--sans); font-size: 13.5px; margin-bottom: 2px; }
+  .log-body p{ color: var(--text-muted); font-family: var(--sans); font-size: 13.5px; }
+
+  /* ---------- Writing ---------- */
+  .writeups{ display:flex; flex-direction: column; gap: 10px; }
+  .writeup{
+    display:flex; justify-content:space-between; align-items:center; gap: 12px;
+    padding: 12px 16px; background: var(--bg-surface); border: 1px solid var(--border); border-radius: 6px;
+  }
+  .writeup .t{ font-size: 14.5px; color: var(--text); }
+  .writeup .arrow{ font-family: var(--mono); color: var(--text-faint); }
+  .writeup:hover .arrow{ color: var(--accent); }
+
+  /* ---------- Footer / contact ---------- */
+  footer{ padding: 56px 0 60px; border-top: 1px solid var(--border); margin-top: 20px; }
+  .report-footer{ font-family: var(--mono); font-size: 13px; color: var(--text-faint); margin-bottom: 22px; }
+  .report-footer .ok{ color: var(--low); }
+  .contact-links{ display:flex; gap: 22px; flex-wrap: wrap; margin-bottom: 22px; }
+  .contact-links a{ font-family: var(--mono); font-size: 14px; color: var(--text); }
+  .contact-links a:hover{ color: var(--accent); }
+  .copyright{ font-size: 12.5px; color: var(--text-faint); }
+
+  ::selection{ background: var(--accent-dim); color: #fff; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="logo">luiz<span>@</span>grochevski</div>
+    <nav>
+      <ul>
+        <li><a href="#stack">stack</a></li>
+        <li><a href="#findings">projetos</a></li>
+        <li><a href="#experience">experiência</a></li>
+        <li><a href="#writing">artigos</a></li>
+        <li><a href="#contact">contato</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="term" id="term">
+      <span class="prompt">luiz@appsec</span><span class="path-seg">:~$</span>
+      <span class="cmd" id="typed"></span><span class="cursor"></span>
+    </div>
+
+    <h1>Luiz Felipe Grochevski</h1>
+    <p class="role"><strong>Java Backend Developer</strong> com foco em <strong>AppSec</strong> — construo APIs e também as ferramentas que testam a segurança delas.</p>
+
+    <div class="panel scan-summary">
+      <div class="panel-head"><span class="dot"></span><span class="path">scan_report.txt</span></div>
+      <div class="panel-body">
+        <dl class="kv-grid">
+          <dt>TARGET</dt><dd>github.com/LuizGrochevski</dd>
+          <dt>LOCATION</dt><dd>Curitiba, Brasil</dd>
+          <dt>STATUS</dt><dd class="status-ok">disponível para oportunidades remotas</dd>
+          <dt>STACK</dt><dd>Java · Spring Boot · Rust · Python</dd>
+          <dt>FINDINGS</dt><dd>6 projetos AppSec confirmados abaixo ↓</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="hero-links">
+      <a class="btn primary" href="#findings">ver projetos</a>
+      <a class="btn" href="https://github.com/LuizGrochevski" target="_blank" rel="noopener">GitHub</a>
+      <a class="btn" href="https://www.linkedin.com/in/luiz-felipe-grochevski-413125190/" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </section>
+
+  <!-- STACK -->
+  <section id="stack">
+    <h2>Stack <span class="count">// portas abertas</span></h2>
+    <div class="panel">
+      <div class="panel-head"><span class="dot"></span><span class="path">nmap -sV luiz.dev</span></div>
+      <div class="panel-body" style="padding:0;">
+        <table class="port-table">
+          <thead>
+            <tr><th>Porta</th><th>Estado</th><th>Serviço</th><th>Detalhe</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="port">8080</td><td class="state-open">open</td><td>Java / Spring Boot</td>
+              <td class="svc-desc">Backend principal — APIs REST, JWT, Spring Security</td>
+            </tr>
+            <tr>
+              <td class="port">1337</td><td class="state-open">open</td><td>Rust</td>
+              <td class="svc-desc">Ferramentas de segurança — scanners, SAST, honeypot</td>
+            </tr>
+            <tr>
+              <td class="port">8000</td><td class="state-open">open</td><td>Python / FastAPI</td>
+              <td class="svc-desc">APIs de orquestração e integração de pipelines</td>
+            </tr>
+            <tr>
+              <td class="port">443</td><td class="state-open">open</td><td>AppSec</td>
+              <td class="svc-desc">OWASP Top 10, auth/authz, JWT, CVE lookup, SAST</td>
+            </tr>
+            <tr>
+              <td class="port">22</td><td class="state-open">open</td><td>Infra</td>
+              <td class="svc-desc">Docker, GitHub Actions (CI/CD), Termux/Linux</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINDINGS -->
+  <section id="findings">
+    <h2>Findings <span class="count">// 6 confirmados</span></h2>
+    <div class="findings">
+
+      <article class="finding" style="--sev-color: var(--high);">
+        <div class="finding-head">
+          <span class="finding-title">sentinel-rs</span>
+          <span class="sev">FLAGSHIP</span>
+        </div>
+        <p class="finding-desc">Scanner de rede assíncrono em Rust — fingerprinting de serviços (64+ assinaturas), fingerprinting TLS via JA3S, construído inteiramente em ambiente mobile (Termux/Android).</p>
+        <div class="finding-meta">
+          <span>Rust</span><span>61 testes</span>
+          <a href="https://github.com/LuizGrochevski/sentinel-rs" target="_blank" rel="noopener">github ↗</a>
+        </div>
+        <div class="finding-evidence"><strong>Evidência:</strong> artigo técnico publicado comparando desempenho e detecção com o Nmap.</div>
+      </article>
+
+      <article class="finding" style="--sev-color: var(--high);">
+        <div class="finding-head">
+          <span class="finding-title">javasast-rs</span>
+          <span class="sev">HIGH</span>
+        </div>
+        <p class="finding-desc">Ferramenta SAST própria para Java, escrita em Rust — 12 regras (SQL injection, segredos hardcoded, XXE, SSRF, deserialização insegura e mais), export SARIF, modo baseline para CI.</p>
+        <div class="finding-meta">
+          <span>Rust</span><span>35 testes</span><span>Maven + Gradle plugin</span>
+          <a href="https://github.com/LuizGrochevski/javasast-rs" target="_blank" rel="noopener">github ↗</a>
+        </div>
+        <div class="finding-evidence"><strong>Evidência:</strong> validado contra o insecure-java-lab, um repositório próprio de código Java deliberadamente vulnerável usado como alvo de teste.</div>
+      </article>
+
+      <article class="finding" style="--sev-color: var(--high);">
+        <div class="finding-head">
+          <span class="finding-title">apisec-rs</span>
+          <span class="sev">HIGH</span>
+        </div>
+        <p class="finding-desc">Testador de segurança de API a partir de uma spec OpenAPI/Swagger — checagens de broken auth, IDOR, headers e rate limiting ausentes.</p>
+        <div class="finding-meta">
+          <span>Rust</span><span>JSON / Markdown report</span>
+          <a href="https://github.com/LuizGrochevski/apisec-rs" target="_blank" rel="noopener">github ↗</a>
+        </div>
+        <div class="finding-evidence"><strong>Evidência:</strong> 4 findings HIGH confirmados ao vivo contra a demo pública do Petstore (broken auth em 3 endpoints + IDOR).</div>
+      </article>
+
+      <article class="finding" style="--sev-color: var(--medium);">
+        <div class="finding-head">
+          <span class="finding-title">netwatch-api</span>
+          <span class="sev">MEDIUM</span>
+        </div>
+        <p class="finding-desc">API REST em FastAPI que orquestra o sentinel-rs — auth JWT, histórico de scans paginado, e um endpoint que cruza serviços detectados com CVEs reais via NVD.</p>
+        <div class="finding-meta">
+          <span>Python / FastAPI</span><span>36 testes</span><span>Docker</span>
+          <a href="https://github.com/LuizGrochevski/netwatch-api" target="_blank" rel="noopener">github ↗</a>
+        </div>
+      </article>
+
+      <article class="finding" style="--sev-color: var(--medium);">
+        <div class="finding-head">
+          <span class="finding-title">traprs</span>
+          <span class="sev">MEDIUM</span>
+        </div>
+        <p class="finding-desc">Honeypot TCP simulando SSH, HTTP e HTTPS simultaneamente — captura banners, payloads e tentativas de autenticação, com alertas em tempo real (Telegram/webhook) e dashboard via WebSocket.</p>
+        <div class="finding-meta">
+          <span>Rust</span><span>Termux + Linux</span>
+          <a href="https://github.com/LuizGrochevski/traprs" target="_blank" rel="noopener">github ↗</a>
+        </div>
+      </article>
+
+      <article class="finding" style="--sev-color: var(--low);">
+        <div class="finding-head">
+          <span class="finding-title">subleak-rs</span>
+          <span class="sev">LOW</span>
+        </div>
+        <p class="finding-desc">Enumeração de subdomínios via logs de Certificate Transparency (crt.sh) — integrado a um pipeline que escaneia automaticamente cada subdomínio descoberto com o sentinel-rs.</p>
+        <div class="finding-meta">
+          <span>Rust</span><span>text / json / csv</span>
+          <a href="https://github.com/LuizGrochevski/subleak-rs" target="_blank" rel="noopener">github ↗</a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <h2>Experiência <span class="count">// log</span></h2>
+    <div class="panel">
+      <div class="panel-head"><span class="dot"></span><span class="path">tail -f experience.log</span></div>
+      <div class="panel-body">
+        <div class="log">
+          <div class="log-entry">
+            <div class="log-ts">[atual]</div>
+            <div class="log-body">
+              <strong>Universidade Positivo — Curitiba</strong>
+              <span class="role">Software Engineering (em andamento)</span>
+            </div>
+          </div>
+          <div class="log-entry">
+            <div class="log-ts">[evo]</div>
+            <div class="log-body">
+              <strong>Evo Sistemas</strong>
+              <span class="role">Software Developer — Java / Backend</span>
+              <p>Liderança técnica e mentoria em desenvolvimento backend com Java.</p>
+            </div>
+          </div>
+          <div class="log-entry">
+            <div class="log-ts">[txfu]</div>
+            <div class="log-body">
+              <strong>TxFu</strong>
+              <span class="role">Software Developer</span>
+              <p>Integração de APIs de pagamento e desenvolvimento de aplicativo PIX.</p>
+            </div>
+          </div>
+          <div class="log-entry">
+            <div class="log-ts">[dixi]</div>
+            <div class="log-body">
+              <strong>Dixi</strong>
+              <span class="role">Software Developer — Flutter / Spring Boot</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WRITING -->
+  <section id="writing">
+    <h2>Artigos <span class="count">// technical writing</span></h2>
+    <div class="writeups">
+      <a class="writeup" href="https://medium.com/@luizgrochevski" target="_blank" rel="noopener">
+        <span class="t">sentinel-rs vs Nmap — comparativo técnico</span><span class="arrow">→</span>
+      </a>
+      <a class="writeup" href="https://medium.com/@luizgrochevski" target="_blank" rel="noopener">
+        <span class="t">Construindo o traprs — um honeypot em Rust</span><span class="arrow">→</span>
+      </a>
+      <a class="writeup" href="https://medium.com/@luizgrochevski" target="_blank" rel="noopener">
+        <span class="t">HackTheBox — writeup da máquina Appointment</span><span class="arrow">→</span>
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="report-footer">scan concluído — <span class="ok">0 issues em aberto</span> — pronto para a próxima etapa</div>
+    <div class="contact-links">
+      <a href="https://github.com/LuizGrochevski" target="_blank" rel="noopener">github.com/LuizGrochevski</a>
+      <a href="https://www.linkedin.com/in/luiz-felipe-grochevski-413125190/" target="_blank" rel="noopener">linkedin.com/in/luiz-felipe-grochevski</a>
+      <a href="mailto:seu-email@exemplo.com">seu-email@exemplo.com</a>
+    </div>
+    <div class="copyright">Luiz Felipe Grochevski — Curitiba, Brasil</div>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var el = document.getElementById('typed');
+    var text = 'whoami';
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) { el.textContent = text; return; }
+    var i = 0;
+    function type(){
+      if (i <= text.length){
+        el.textContent = text.slice(0, i);
+        i++;
+        setTimeout(type, 90);
+      }
+    }
+    type();
+  })();
+</script>
+
+</body>
+</html>
