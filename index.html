@@ -338,12 +338,25 @@
   </section>
 
   <section id="backend">
-    <h2>Backend <span class="count">// 1 confirmado</span></h2>
+    <h2>Backend <span class="count">// 2 confirmados</span></h2>
     <div class="findings">
       <article class="finding" style="--sev-color: var(--accent);">
         <div class="finding-head">
+          <span class="finding-title">secure-transaction-api</span>
+          <span class="sev">SPRING BOOT</span>
+        </div>
+        <p class="finding-desc">API de transferências estilo PIX em Spring Boot 3 / Java 21, com segurança aplicada por design — não é uma ferramenta externa de AppSec, é a própria API que é segura: MFA/TOTP com challenge-before-execute (202 + challengeId, dinheiro só sai após confirmação), proteção contra IDOR, audit log append-only, JWT com refresh, BCrypt cost 12.</p>
+        <div class="finding-meta">
+          <span>Java 21 / Spring Boot 3.3</span><span>21 testes</span>
+          <a href="https://github.com/LuizGrochevski/secure-transaction-api" target="_blank" rel="noopener">github ↗</a>
+        </div>
+        <div class="finding-evidence"><strong>Evidência:</strong> nasceu da experiência real com integração de APIs de pagamento e PIX na TxFuel.</div>
+      </article>
+
+      <article class="finding" style="--sev-color: var(--accent);">
+        <div class="finding-head">
           <span class="finding-title">vehicle-telemetry-api</span>
-          <span class="sev">BACKEND</span>
+          <span class="sev">QUARKUS</span>
         </div>
         <p class="finding-desc">API de telemetria veicular em Java 21 / Quarkus 3 — Apache Camel, Kafka, Hibernate Reactive, PostgreSQL, métricas via Prometheus/Micrometer.</p>
         <div class="finding-meta">
