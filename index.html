@@ -368,7 +368,7 @@
   </section>
 
   <section id="findings">
-    <h2>AppSec — Projetos de Segurança <span class="count">// 6 confirmados</span></h2>
+    <h2>AppSec — Projetos de Segurança <span class="count">// 8 confirmados</span></h2>
     <div class="findings">
 
       <article class="finding" style="--sev-color: var(--high);">
@@ -410,6 +410,18 @@
         <div class="finding-evidence"><strong>Evidência:</strong> 4 findings HIGH confirmados ao vivo contra a demo pública do Petstore (broken auth em 3 endpoints + IDOR).</div>
       </article>
 
+      <article class="finding" style="--sev-color: var(--high);">
+        <div class="finding-head">
+          <span class="finding-title">secretscan-rs</span>
+          <span class="sev">HIGH</span>
+        </div>
+        <p class="finding-desc">Scanner de segredos em código-fonte, escrito em Rust — detecta chaves AWS, GitHub PAT, Stripe, Slack, Google, chaves privadas e JWTs, com scan de histórico do git e detecção por entropia como fallback. Mascara o valor real no relatório.</p>
+        <div class="finding-meta">
+          <span>Rust</span><span>22 testes</span><span>pre-commit hook</span>
+          <a href="https://github.com/LuizGrochevski/secretscan-rs" target="_blank" rel="noopener">github ↗</a>
+        </div>
+      </article>
+
       <article class="finding" style="--sev-color: var(--medium);">
         <div class="finding-head">
           <span class="finding-title">netwatch-api</span>
@@ -443,6 +455,18 @@
         <div class="finding-meta">
           <span>Rust</span><span>text / json / csv</span>
           <a href="https://github.com/LuizGrochevski/subleak-rs" target="_blank" rel="noopener">github ↗</a>
+        </div>
+      </article>
+
+      <article class="finding" style="--sev-color: var(--medium);">
+        <div class="finding-head">
+          <span class="finding-title">secure-vault</span>
+          <span class="sev">MOBILE</span>
+        </div>
+        <p class="finding-desc">Password manager em Flutter — cofre local-first com AES-256, desbloqueio biométrico, gerador de senhas com entropia real e checagem de vazamento via HaveIBeenPwned. Segurança implementada no próprio app, não só consumida de uma API.</p>
+        <div class="finding-meta">
+          <span>Flutter / Bloc</span><span>AES-256</span><span>Android</span>
+          <a href="https://github.com/LuizGrochevski/secure-vault" target="_blank" rel="noopener">github ↗</a>
         </div>
       </article>
 
